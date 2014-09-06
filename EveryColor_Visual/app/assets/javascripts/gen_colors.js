@@ -1,8 +1,6 @@
 var Build = function(dataset) {
   var svg = d3.select("body")
               .append("svg")
-              .attr("width", 600)
-              .attr("height", 600);
 
   svg.selectAll("circle")
      .data(dataset)
@@ -10,10 +8,12 @@ var Build = function(dataset) {
      .append("circle")
 
      .attr("cx", function(d) {
-        return d[0];
+        console.log($("svg").width());
+        console.log($("svg").height());
+        return d[0] * $("svg").width();
      })
      .attr("cy", function(d) {
-        return d[1];
+        return d[1] * $("svg").height();
      })
      .attr("fill", function(d) {
         return d[2];
