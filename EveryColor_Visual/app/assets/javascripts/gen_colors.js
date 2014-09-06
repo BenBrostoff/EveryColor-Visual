@@ -15,8 +15,8 @@ var Build = function(dataset) {
      .attr("cy", function(d) {
         return d[1];
      })
-     .attr("color", function(d) {
-        return "#" + d[2];
+     .attr("fill", function(d) {
+        return d[2];
      })
      .attr("r", function(d) {
         return d[3]; 
