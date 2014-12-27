@@ -22,3 +22,16 @@ svg, html, body {
 body {
   margin: 0;
 }
+
+#leader{
+  margin: 0;  
+  color: white;
+  text-align: center;
+}
+#informational {
+  margin: 0;
+}
+#informational, a {
+  color: white;
+  text-align: center;
+}

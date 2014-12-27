@@ -3,6 +3,14 @@ var Build = function(dataset) {
       svg = d3.select("body")
                .append("svg")
 
+  function fillLeader() {
+    var leaderText = "latest favorite: "+ dataset.colors[0][2] + " / " + dataset.max + " favs and rts" +
+                " / " + dataset.colors[0][4];
+    $("#leader").text(leaderText);
+    $(".leader").css("background-color", dataset.colors[0][2])
+  }
+  fillLeader();
+
   function testMaxWidth(d) {
     if (d[3] == 50) {
       return 0.35 * $("svg").width();
@@ -38,30 +46,6 @@ var Build = function(dataset) {
      .attr("r", function(d) {
        return d[3]; 
      })
-
-  var text = svg.selectAll("text")
-     .data(dataset.colors)
-     .enter()
-     .append("text")
-     .text(function(d) {
-        return d[2] + " / " + dataset.max + " favs and rts" +
-                " / " + d[4];
-     })
-     .attr("x", function(d) {
-        return testMaxWidth(d);
-      })
-     .attr("y", function(d) {
-        return testMaxHeight(d) + 75;
-    })
-    .attr("font-family", "sans-serif")
-    .attr("font-size", function(d) {
-        var size = d[3]/50 * 20;
-        if (size == 20) {
-          return 30;
-        }
-        else {return 0;}
-    })
-    .attr("fill", "black");
 
   function setRand(object, attr) {
     var rand = Math.round(Math.random() * 1);
