@@ -1,40 +1,45 @@
 var Build = function(dataset) {
-  var svg = d3.select("body")
-              .append("svg")
+  var dir = [-1, 1],
+      svg = d3.select("body")
+               .append("svg")
 
-  var testMaxWidth = function(d) {
+  function testMaxWidth(d) {
     if (d[3] == 50) {
       return 0.35 * $("svg").width();
       }
     else {return d[0] * $("svg").width()};
   }
 
-  var testMaxHeight = function(d) {
+  function testMaxHeight(d) {
     if (d[3] == 50) {
       return 0.55 * $("svg").height();
       }
     else {return d[1] * $("svg").height()};
   }
 
-  svg.selectAll("circle")
+  var circles = svg.selectAll("circle")
      .data(dataset.colors)
      .enter()
      .append("circle")
 
      .attr("cx", function(d) {
-        return testMaxWidth(d);
+       setRand(this, 'xDir');
+       this.xPosition = testMaxWidth(d);
+       return testMaxWidth(d);
      })
      .attr("cy", function(d) {
+       setRand(this, 'yDir');
+       this.yPosition = testMaxHeight(d);
        return testMaxHeight(d);
      })
      .attr("fill", function(d) {
-        return d[2];
+       return d[2];
      })
      .attr("r", function(d) {
-        return d[3]; 
-     });
+       return d[3]; 
+     })
 
-  svg.selectAll("text")
+  var text = svg.selectAll("text")
      .data(dataset.colors)
      .enter()
      .append("text")
@@ -57,6 +62,61 @@ var Build = function(dataset) {
         else {return 0;}
     })
     .attr("fill", "black");
+
+  function setRand(object, attr) {
+    var rand = Math.round(Math.random() * 1);
+    if (object[attr] === undefined) {
+      object[attr] = dir[rand];
+    }
+  }
+
+  setInterval(function() {
+    circles 
+     .attr("cy", function(d) {
+        if (this.moveForward === undefined && this.moveBack === undefined) {
+          this.yPosition += this.yDir;
+        } else {
+          if (this.moveForward === true) {
+            this.yPosition += 1;
+          }
+          else {
+            this.yPosition -= 1;
+          }
+        }
+        if (Math.round(this.yPosition) >= 600) {  
+          this.moveForward = false;
+        }
+
+        if (Math.round(this.yPosition) <= 0) {
+          this.moveForward = true;
+        }
+
+        return this.yPosition;
+      })
+    .attr("cx", function(d) {
+        if (this.moveForwardX === undefined && this.moveBackX === undefined) {
+          this.xPosition += this.xDir;
+        } else {
+          if (this.moveForwardX === true) {
+            this.xPosition += 1;
+          }
+          else {
+            this.xPosition -= 1;
+          }
+        }
+        if (Math.round(this.xPosition) >= 1200) { 
+          this.moveForwardX = false;
+        }
+
+        if (Math.round(this.xPosition) <= 0) {  
+          this.moveForwardX = true;
+        }
+
+        return this.xPosition;
+      })
+          
+    }, 10);
+
 }
 
 var Dataset = function() {
@@ -75,8 +135,9 @@ var Dataset = function() {
       dataset.max = result.max;
       Build(dataset);
     });
+  
 }
 
- $(document).ready(function() {
+$(document).ready(function() {
     Dataset();
 });
