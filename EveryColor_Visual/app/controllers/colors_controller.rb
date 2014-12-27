@@ -4,10 +4,6 @@ class ColorsController < ApplicationController
     return rand(10000)/10000.to_f 
   end
 
-  def tweet_find
-
-  end
-
   def generate
     holder, max_find = [], []
     $client.user_timeline("everycolorbot", :count => 200).each do |tweet|
